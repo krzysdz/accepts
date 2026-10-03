@@ -141,6 +141,11 @@ Accepts.prototype.encodings = function (encodings_) {
     return this.negotiator.encodings()
   }
 
+  // no accept-encoding header, return first given encoding
+  if (typeof this.headers['accept-encoding'] !== 'string') {
+    return encodings[0]
+  }
+
   return this.negotiator.encodings(encodings)[0] || false
 }
 

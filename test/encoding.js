@@ -19,14 +19,13 @@ describe('accepts.encodings()', function () {
         var req = createRequest()
         var accept = accepts(req)
         assert.ok(deepEqual(accept.encodings(), ['identity']))
-        assert.strictEqual(accept.encodings('gzip', 'deflate', 'identity'), 'identity')
       })
 
       describe('when identity is not included', function () {
-        it('should return false', function () {
+        it('should return the first encoding', function () {
           var req = createRequest()
           var accept = accepts(req)
-          assert.strictEqual(accept.encodings('gzip', 'deflate'), false)
+          assert.strictEqual(accept.encodings('gzip', 'deflate'), 'gzip')
         })
       })
     })
