@@ -136,14 +136,16 @@ Accepts.prototype.encodings = function (encodings_) {
     }
   }
 
-  // no encodings, return all requested encodings
-  if (!encodings || encodings.length === 0) {
-    return this.negotiator.encodings()
+  var noEncodings = !encodings || encodings.length === 0
+
+  // no accept-encoding header, return first given encoding or ['*'] if no encodings
+  if (typeof this.headers['accept-encoding'] !== 'string') {
+    return noEncodings ? ['*'] : encodings[0]
   }
 
-  // no accept-encoding header, return first given encoding
-  if (typeof this.headers['accept-encoding'] !== 'string') {
-    return encodings[0]
+  // no encodings, return all requested encodings
+  if (noEncodings) {
+    return this.negotiator.encodings()
   }
 
   return this.negotiator.encodings(encodings)[0] || false
